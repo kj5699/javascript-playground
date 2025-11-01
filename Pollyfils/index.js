@@ -84,11 +84,12 @@ function myPromise(executor){
 
 // Promise.all
 Promise.prototype.myPromiseAll = function(promises){
+    let finalCount = 0
     return new Promise((resolve, reject) => {
         const resultArray = [];
         for (let i =0 ; i < promises.length ; i++){
-            promises[i].then(res=> {resultArray[i] = res}).catch((err)=> reject(err))
-            if(resultArray.length === promises.length){
+            promises[i].then(res=> {resultArray[i] = res; finalCount++ ;}).catch((err)=> reject(err))
+            if(finalCount === promises.length){
                 resolve(resultArray)
             }
         }
@@ -112,7 +113,8 @@ Promise.prototype.myPromiseAllSettled = function(promises){
 
 // call
 Function.prototype.myCall = function(context, ...args){
-    Object.assign(context,{'getPersonalizedDetail': this});
+    let newFunctionName = this.name
+    Object.assign(context,{newFunctionName :  this});
     context.getPersonalizedDetail(...args);
 }
 
